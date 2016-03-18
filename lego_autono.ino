@@ -1,5 +1,5 @@
 /************************************************************************/
-/*                                                                 
+/*
   This application has been authored with the purpose of interfacing 
   microcontrollers such as an Arduino and Raspberry Pi 2 Model B to 
   control the outputs to the motors of a car - 
@@ -12,10 +12,21 @@
   ->
   ->
   ->
-  
-************************************************************************/
-/*
+*/  
+/************************************************************************/
 
+#include <Wire.h>
+#include <EV3Shield.h>
+
+void setup()
+{
+  
+}
+
+void loop()
+{
+  
+}
 
 
 
