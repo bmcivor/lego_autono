@@ -1,6 +1,23 @@
-/* BaseI2CDevice.cpp
- *
- * This is a base class for devices that use the I2C protocol.
+// BaseI2CDevice.cpp
+//
+// This is a base class for devices that use the I2C protocol.
+//
+// 2010-05-31 - Initial version, by Clinton Blackmore
+//
+/*
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include "BaseI2CDevice.h"
@@ -13,6 +30,7 @@ extern "C" {
 
 // Max I2C message length is 16 bytes.  
 const int BUFFER_LEN = 16;  
+
 
 // Initialize static variables
 uint8_t* BaseI2CDevice::_buffer = 0;
@@ -35,8 +53,7 @@ BaseI2CDevice::BaseI2CDevice(uint8_t i2c_address)
 
 void BaseI2CDevice::initProtocol()
 {
-  if ( b_initialized )
-      return;
+  if ( b_initialized ) return;
   Wire.begin();
   b_initialized = true;
 }

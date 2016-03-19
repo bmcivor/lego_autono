@@ -1,8 +1,31 @@
 
-/* BaseI2CDevice.h
- *
- * This is a class for controlling some devices that
- * communicate using the I2C protocol.
+// BaseI2CDevice.h
+//
+// This is a class for controlling some devices that
+// communicate using the I2C protocol. 
+//
+// Use at your own risk!
+//
+// Initial version: 2010-05-31 by Clinton Blackmore
+
+/*
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
+/* Change log
+* 07/07/11    Deepak Patil        Added getFeatureSet.
 */
 
 #ifndef BASEI2CDEVICE_H
@@ -71,6 +94,7 @@ inline void writeLongToBuffer(uint8_t* buf, int32_t data)
 class BaseI2CDevice
 {
 	// Note that this class is a base class, but not an abstract base class
+	// Feel free to instantiate BaseI2CDevice.
 	
 public:
 	/** constructor for the BaseI2C Device class; requires the i2c address of the device */
