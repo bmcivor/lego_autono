@@ -1,3 +1,5 @@
+
+
 /************************************************************************/
 /*
   This application has been authored with the purpose of interfacing 
@@ -35,12 +37,10 @@ void setup()
   delay(1000);                     // wait 1 second for serial to begin
   
   char str[50];                    // string to output to serial (terminal)
-  
-  evshield.init( SH_HardwareI2C );
   /*
+  evshield.init( SH_HardwareI2C );
   Serial.println("Press Go Button to start test");
   evshield.waitForButtonPress(BTN_GO);
-  */
   Serial.println("Button Pressed, Resetting Bank A and Bank B");
   
   evshield.bank_a.motorReset();    // reset bank A of motors
@@ -53,7 +53,6 @@ void setup()
   delay(2000);
   
   evshield.bank_b.motorRunDegrees(SH_Motor_2, SH_Direction_Reverse, 90, 180, SH_Completion_Dont_Wait, SH_Next_Action_Float); 
-  /*
   delay(2000);
   
   evshield.bank_b.motorRunDegrees(SH_Motor_2, SH_Direction_Forward, 90, 180, SH_Completion_Wait_For, SH_Next_Action_Float); 
@@ -61,7 +60,7 @@ void setup()
   delay(2000);
   
   evshield.bank_b.motorRunDegrees(SH_Motor_2, SH_Direction_Reverse, 90, 180, SH_Completion_Wait_For, SH_Next_Action_Float);
-  */
+ 
   
   Serial.println("Test Back Right Motor....");
   sprintf(str, "Motor Forward");
@@ -69,8 +68,8 @@ void setup()
   str[0] = '\0';
   
   // test back left motor... evshield.bank_b m1 forward
-  evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, 100);
-  evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, 50);
+  evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, 123);
+  evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, 123);
   
   delay(500);
  
