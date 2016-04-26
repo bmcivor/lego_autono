@@ -12,9 +12,17 @@ EVShield evshield(0x34, 0x36);
 /* Init analog devices on shield */
 EVs_EV3Infrared    sensorIR;
 
-int direction = 2;                // current direction, 
+int direction = 2;                  // current direction, 
                                     // 2 is station, 3 is forward, 
                                     // 1 as backward
+
+int32_t steeringDegrees;            // steering servo position in degrees 
+                                    // works in a range of 140 degrees
+                                    // wheels must be centered at setup
+                                    
+int32_t maxSteerLeft;               // max value for steering left
+int32_t maxSteerRight;              // max value for steering right
+int32_t centerSteer;                // center value of steering
 
 void setup()
 {
@@ -40,14 +48,36 @@ void setup()
   evshield.bank_a.motorReset();
   evshield.bank_b.motorReset();
   
-  Serial.println("setup done");
+  Serial.println("Setup Done");
   Serial.println("set LEGO remote to specified channel and push buttons");
-  Serial.println ("Press GO button to continue");
+  for(int i = 0; i < 5; i++)
+  {
+    Serial.println(".");
+    delay(1000);
+  }
+  Serial.println("Ensure front wheels are centered for steering init");
   evshield.bank_a.ledSetRGB(100,0,0);
   evshield.bank_b.ledSetRGB(100,0,0);
+  Serial.println ("Press GO button to calibrate steering");
   evshield.waitForButtonPress(BTN_GO);
-  evshield.bank_a.ledSetRGB(0,0,100);
-  evshield.bank_b.ledSetRGB(0,0,100);  
+  
+  maxSteerLeft = setMaxLeft();
+  Serial.println("Max Left Steering Value: ");
+  Serial.println(maxSteerLeft);
+  delay(1000);
+  
+  maxSteerRight = setMaxRight();
+  Serial.println("Max Right Steering Value: ");
+  Serial.println(maxSteerRight);
+  delay(1000);
+  
+  centerSteer = centerSteering(maxSteerLeft, maxSteerRight);
+  
+  Serial.println ("Press GO button to Start Car");
+  evshield.waitForButtonPress(BTN_GO);
+  
+  evshield.bank_a.ledSetRGB(0,100,0);
+  evshield.bank_b.ledSetRGB(0,100,0);  
 }
 
 void loop()
@@ -61,15 +91,16 @@ void loop()
   turnLeft(button);
   turnRight(button);
   
-  Serial.print("Button: ");
-  Serial.println(button);
+  steeringDegrees = getSteeringPosition();
+  
+  Serial.print("Degrees: ");
+  Serial.println(steeringDegrees);
 }
 
 void driveForward(int button)
 {
   if(button == 1)
   {
-    Serial.print("Drive Forward");
     evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, 100);
     evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, 100);
   }
@@ -79,7 +110,6 @@ void driveBackward(int button)
 {
   if(button == 2)
   {
-    Serial.print("Drive Backward");
     evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Reverse, 100);
     evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Reverse, 100);
   }
@@ -89,7 +119,6 @@ void turnLeft(int button)
 {
   if(button == 3)
   {
-    Serial.print("Drive Left");
     evshield.bank_b.motorRunDegrees(SH_Motor_2, SH_Direction_Forward, 100, 35, SH_Completion_Wait_For, SH_Next_Action_Float);
   }
 }
@@ -98,9 +127,33 @@ void turnRight(int button)
 {
   if(button == 4)
   {
-    Serial.print("Drive Right");
     evshield.bank_b.motorRunDegrees(SH_Motor_2, SH_Direction_Reverse, 100, 35, SH_Completion_Wait_For, SH_Next_Action_Float);
   }
 }
 
+int32_t getSteeringPosition()
+{
+  return evshield.bank_b.motorGetEncoderPosition(SH_Motor_2);
+}
 
+int32_t setMaxLeft()
+{
+  evshield.bank_b.motorRunSeconds(SH_Motor_2, SH_Direction_Forward, 100, 5, SH_Completion_Wait_For, SH_Next_Action_Float);
+  delay(5000);
+  return evshield.bank_b.motorGetEncoderPosition(SH_Motor_2);
+}
+
+int32_t setMaxRight()
+{
+  evshield.bank_b.motorRunSeconds(SH_Motor_2, SH_Direction_Reverse, 100, 5, SH_Completion_Wait_For, SH_Next_Action_Float);
+  delay(5000);
+  return evshield.bank_b.motorGetEncoderPosition(SH_Motor_2);
+}
+
+int32_t centerSteering(int32_t maxLeft, int32_t maxRight)
+{
+  int center = (maxLeft - maxRight) / 2;
+  evshield.bank_b.motorRunDegrees(SH_Motor_2, SH_Direction_Forward, 100, center, SH_Completion_Wait_For, SH_Next_Action_Float);
+  delay(5000);
+  return center;
+}
