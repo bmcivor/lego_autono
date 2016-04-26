@@ -6,6 +6,9 @@
 #include <EVShieldAGS.h>
 #include <EVs_EV3Infrared.h>
 
+const int FULL_POWER = 100;
+const int STEERING_FULL_POWER = 60;
+
 /* Init Shield */
 EVShield evshield(0x34, 0x36);
 
@@ -23,6 +26,8 @@ int32_t steeringDegrees;            // steering servo position in degrees
 int32_t maxSteerLeft;               // max value for steering left
 int32_t maxSteerRight;              // max value for steering right
 int32_t centerSteer;                // center value of steering
+
+int32_t static power = 0;                      // power settings for rear wheels, single for now
 
 void setup()
 {
@@ -61,18 +66,20 @@ void setup()
   Serial.println ("Press GO button to calibrate steering");
   evshield.waitForButtonPress(BTN_GO);
   
-  maxSteerLeft = setMaxLeft();
-  Serial.println("Max Left Steering Value: ");
-  Serial.println(maxSteerLeft);
-  delay(1000);
-  
   maxSteerRight = setMaxRight();
   Serial.println("Max Right Steering Value: ");
   Serial.println(maxSteerRight);
   delay(1000);
   
-  centerSteer = centerSteering(maxSteerLeft, maxSteerRight);
+  maxSteerLeft = setMaxLeft();
+  Serial.println("Max Left Steering Value: ");
+  Serial.println(maxSteerLeft);
+  delay(1000);
   
+  centerSteer = centerSteering(maxSteerLeft, maxSteerRight) - maxSteerRight;
+  Serial.println("Center value: ");
+  Serial.println(centerSteer);
+  delay(500);
   Serial.println ("Press GO button to Start Car");
   evshield.waitForButtonPress(BTN_GO);
   
@@ -86,32 +93,49 @@ void loop()
   int channel = 1;
   button = sensorIR.readChannelButton(channel);
   
-  driveForward(button);
-  driveBackward(button);
+  steeringDegrees = getSteeringPosition();
+  power = powerTurning(steeringDegrees);
+  Serial.print("Power rating: ");
+  Serial.println(power);
+  driveForward(button, power);
+  driveBackward(button, power);
   turnLeft(button);
   turnRight(button);
-  
-  steeringDegrees = getSteeringPosition();
-  
+ 
   Serial.print("Degrees: ");
   Serial.println(steeringDegrees);
 }
 
-void driveForward(int button)
+void driveForward(int button, int32_t power)
 {
   if(button == 1)
   {
-    evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, 100);
-    evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, 100);
+    evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, power);
+    evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, power);
   }
 }
 
-void driveBackward(int button)
+void driveBackward(int button, int power)
 {
   if(button == 2)
   {
-    evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Reverse, 100);
-    evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Reverse, 100);
+    evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Reverse, power);
+    evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Reverse, power);
+  }
+}
+
+//use getSteering() as method to calculate current position
+int32_t powerTurning(int steeringValue)
+{
+  Serial.println("calculating power");
+  if(steeringValue < (centerSteer + 10))
+  {
+    Serial.println("Turned Righ");
+    return 100;
+  }
+  else
+  {
+    return 1;
   }
 }
 
@@ -136,14 +160,14 @@ int32_t getSteeringPosition()
   return evshield.bank_b.motorGetEncoderPosition(SH_Motor_2);
 }
 
-int32_t setMaxLeft()
+int32_t setMaxRight()
 {
   evshield.bank_b.motorRunSeconds(SH_Motor_2, SH_Direction_Forward, 100, 5, SH_Completion_Wait_For, SH_Next_Action_Float);
   delay(5000);
   return evshield.bank_b.motorGetEncoderPosition(SH_Motor_2);
 }
 
-int32_t setMaxRight()
+int32_t setMaxLeft()
 {
   evshield.bank_b.motorRunSeconds(SH_Motor_2, SH_Direction_Reverse, 100, 5, SH_Completion_Wait_For, SH_Next_Action_Float);
   delay(5000);
@@ -152,7 +176,7 @@ int32_t setMaxRight()
 
 int32_t centerSteering(int32_t maxLeft, int32_t maxRight)
 {
-  int center = (maxLeft - maxRight) / 2;
+  int32_t center = (maxRight - maxLeft) / 2;
   evshield.bank_b.motorRunDegrees(SH_Motor_2, SH_Direction_Forward, 100, center, SH_Completion_Wait_For, SH_Next_Action_Float);
   delay(5000);
   return center;
