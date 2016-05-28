@@ -27,8 +27,6 @@ int32_t maxSteerLeft;               // max value for steering left
 int32_t maxSteerRight;              // max value for steering right
 int32_t centerSteer;                // center value of steering
 
-int32_t static power = 0;                      // power settings for rear wheels, single for now
-
 void setup()
 {
   Serial.begin(115200);             // 115200 baud rate
@@ -94,11 +92,8 @@ void loop()
   button = sensorIR.readChannelButton(channel);
   
   steeringDegrees = getSteeringPosition();
-  power = powerTurning(steeringDegrees);
-  Serial.print("Power rating: ");
-  Serial.println(power);
-  driveForward(button, power);
-  driveBackward(button, power);
+  driveForward(button);
+  driveBackward(button);
   turnLeft(button);
   turnRight(button);
  
@@ -106,36 +101,21 @@ void loop()
   Serial.println(steeringDegrees);
 }
 
-void driveForward(int button, int32_t power)
+void driveForward(int button)
 {
   if(button == 1)
   {
-    evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, power);
-    evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, power);
+    evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, 100);
+    evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Forward, 100);
   }
 }
 
-void driveBackward(int button, int power)
+void driveBackward(int button)
 {
   if(button == 2)
   {
-    evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Reverse, power);
-    evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Reverse, power);
-  }
-}
-
-//use getSteering() as method to calculate current position
-int32_t powerTurning(int steeringValue)
-{
-  Serial.println("calculating power");
-  if(steeringValue < (centerSteer + 10))
-  {
-    Serial.println("Turned Righ");
-    return 100;
-  }
-  else
-  {
-    return 1;
+    evshield.bank_b.motorRunUnlimited(SH_Motor_1, SH_Direction_Reverse, 100);
+    evshield.bank_a.motorRunUnlimited(SH_Motor_1, SH_Direction_Reverse, 100);
   }
 }
 
