@@ -1,3 +1,4 @@
+from socket import *
 import time
 import RPi.GPIO as GPIO
 
@@ -10,6 +11,11 @@ SENSOR_ONE_SIG = 17
 
 SENSOR_TWO_TRIG = 23
 SENSOR_TWO_ECHO = 24
+
+# create a socker and bind the given socket to the host
+# for communication of data
+client_socket = socket(AF_INET, SOCK_STREAM)
+client_socket.connect(('192.168.43.178', 8002))
 
 def setup():
     print "Setup of Ultrasonic Sensors - Start"
@@ -32,39 +38,40 @@ def sensor_one_read():
     GPIO.setup(SENSOR_ONE_SIG, GPIO.OUT)
     GPIO.output(SENSOR_ONE_SIG, True)
 
-    time.sleep(0.000005)
+    time.sleep(0.02)
 
     GPIO.output(SENSOR_ONE_SIG, False)
 
     GPIO.setup(SENSOR_ONE_SIG, GPIO.IN)
-    goodread=True
-    watchtime=time.time()
-    while GPIO.input(SENSOR_ONE_SIG)==0 and goodread:
-            starttime=time.time()
-            if (starttime-watchtime > timeout):
-                    goodread=False
+    goodread = True
+    watchtime = time.time()
+    while GPIO.input(SENSOR_ONE_SIG) == 0 and goodread:
+            starttime = time.time()
+            if (starttime - watchtime > timeout):
+                    goodread = False
 
     if goodread:
-            watchtime=time.time()
-            while GPIO.input(SENSOR_ONE_SIG)==1 and goodread:
-                    endtime=time.time()
+            watchtime = time.time()
+            while GPIO.input(SENSOR_ONE_SIG) == 1 and goodread:
+                    endtime = time.time()
                     if (endtime-watchtime > timeout):
-                            goodread=False
+                            goodread = False
 
     if goodread:
-            duration=endtime-starttime
-            distance1 = round((duration*34000/2), 2)
+            duration = endtime - starttime
+            distance1 = round((duration * 34000 / 2), 2)
             print "Distance 1:", distance1, "cm"
+            client_socket.send(str(distance1))
 
 def sensor_two_read():
     GPIO.output(SENSOR_TWO_TRIG, True)
     time.sleep(0.1)
     GPIO.output(SENSOR_TWO_TRIG, False)
 
-    while GPIO.input(SENSOR_TWO_ECHO)==0:
+    while GPIO.input(SENSOR_TWO_ECHO) == 0:
         pulse_start = time.time()
 
-    while GPIO.input(SENSOR_TWO_ECHO)==1:
+    while GPIO.input(SENSOR_TWO_ECHO) == 1:
         pulse_end = time.time()
 
     pulse_duration = pulse_end - pulse_start
@@ -72,9 +79,11 @@ def sensor_two_read():
     distance2 = pulse_duration * 17150
 
     distance2 = round(distance2, 2)
-
     print "Distance 2:", distance2, "cm"
+    client_socket.send(str(distance2))
+    
 
 while(1):
     sensor_one_read()
     sensor_two_read()
+
