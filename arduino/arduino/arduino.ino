@@ -115,6 +115,15 @@ void driveForward(int button)
   }
 }
 
+void driveStop(int button)
+{
+  if(button == 5)
+  {
+    evshield.bank_b.motorStop(SH_Motor_1, SH_Next_Action_Brake);
+    evshield.bank_a.motorStop(SH_Motor_1, SH_Next_Action_Brake);
+  }
+}
+
 void driveBackward(int button)
 {
   if(button == 2)
