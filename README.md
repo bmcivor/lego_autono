@@ -2,7 +2,11 @@
 Autonomous Lego Mindstorms / Arduino / Raspberry Pi
 
 Working Repository for Autonomous Lego Car Build using the Lego Mindstorms
-platform with microcontrollers to perform the Autonomous Tasks.
+platform with micro-controllers to perform the Autonomous Tasks.
+
+Current setup is for a Nexus 6 Android Platform router. Power saving mode on
+Raspberry Pi Wi Pi must be disabled for continuous connection between Raspberry Pi
+and Controller.
 
 ### Dependencies
 * Arduino:
@@ -14,10 +18,11 @@ platform with microcontrollers to perform the Autonomous Tasks.
   - Picamera
   - HCSR04 Ultrasonic sensor
 * Controller:
-  - Numpy
-  - OpenCV
-  - Pygame
-  - PiSerial
+  - pip install <module>
+    - pyserial
+    - Numpy
+    - OpenCV
+    - Pygame
   
 ### About
 - raspberry_pi/ 
