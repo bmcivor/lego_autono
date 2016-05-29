@@ -35,8 +35,8 @@ and Controller.
 - controller/
   - cascade_xml/ 
     - trained cascade classifiers xml files
-  - chess_board/ 
-    - images for calibration, captured by pi camera 
+  - calibration_test_images/ 
+    - images for calibration, supplied by opencv samples
   - training_data/ 
     - training image data for neural network in npz format
   - testing_data/ 
