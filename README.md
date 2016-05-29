@@ -19,9 +19,9 @@ and Controller.
   - HCSR04 Ultrasonic sensor
 * Controller:
   - pip install <module>
-    - pyserial
-    - Numpy
-    - OpenCV
+    - PySerial (pyserial)
+    - Numpy (numpy, as an alias np)
+    - OpenCV (cv2)
     - Pygame
 * Testing:
   - ***drive_by_keyboard.py***: small testing for control by keypress over serial connection
@@ -56,14 +56,16 @@ and Controller.
   - ***rc_driver.py***: a multithread server program receives video frames and sensor data, and allows RC car drives by itself 
 
 
-Special Notes:
-—————————————-
+# Special Notes:
+--------------
 removed power saving on wifi adapter to limit dropping while adapter is idle
 
 sudo nano /etc/modprobe.d/8192cu.conf
 and paste this:
 
 # Disable power saving
+-----------------------
+
 options 8192cu rtw_power_mgnt=0 rtw_enusbss=1 rtw_ips_mode=1
 then reboot
 

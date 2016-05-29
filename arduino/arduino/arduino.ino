@@ -26,6 +26,7 @@ int32_t steeringDegrees;            // steering servo position in degrees
 int32_t maxSteerLeft;               // max value for steering left
 int32_t maxSteerRight;              // max value for steering right
 int32_t centerSteer;                // center value of steering
+int button;                         // value read from button of controller
 
 void setup()
 {
@@ -87,9 +88,13 @@ void setup()
 
 void loop()
 {
-  int button;
-  int channel = 1;
-  button = sensorIR.readChannelButton(channel);
+  if (Serial.available())
+  {
+    /* read the most recent byte */
+    button = Serial.read();
+    /*ECHO the value that was read, back to the serial port. */
+    Serial.write(button);
+  }
   
   steeringDegrees = getSteeringPosition();
   driveForward(button);

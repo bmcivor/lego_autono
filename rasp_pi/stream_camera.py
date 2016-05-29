@@ -18,8 +18,8 @@ connection = client_socket.makefile('wb')
 
 try:
     with picamera.PiCamera() as camera:
-        camera.resolution = (320, 240)      # pi camera resolution
-        camera.framerate = 10               # 10 frames/sec
+        camera.resolution = (640, 480)      # pi camera resolution
+        camera.framerate = 20               # 10 frames/sec
         time.sleep(2)                       # give 2 secs for camera to setup and initialize
         start = time.time()
         stream = io.BytesIO()
