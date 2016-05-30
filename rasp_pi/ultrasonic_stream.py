@@ -77,13 +77,13 @@ def sensor_two_read():
     pulse_duration = pulse_end - pulse_start
 
     distance2 = pulse_duration * 17150
-
+    client_socket.send(str(distance2))
     distance2 = round(distance2, 2)
     print "Distance 2:", distance2, "cm"
-    client_socket.send(str(distance2))
+
     
 
 while(1):
-    sensor_one_read()
+    # sensor_one_read()
     sensor_two_read()
 

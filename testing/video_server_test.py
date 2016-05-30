@@ -32,8 +32,8 @@ class VideoStreamingTest(object):
                     jpg = vid_stream_bytes[first:last + 2]
                     vid_stream_bytes = vid_stream_bytes[last + 2:]
                     # change to test filtering of image data
-                    # image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_GRAYSCALE)
-                    image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_UNCHANGED)
+                    image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                    # image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_UNCHANGED)
                     cv2.flip(image, flipCode = -1)
                     cv2.imshow('image', image)
 

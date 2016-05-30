@@ -21,9 +21,12 @@ class SensorStreamingTest(object):
             start = time.time()
             
             while True:
-                sensor_data = self.connection.recv(1024)
-                print "Distance: %s cm" % sensor_data
-                
+                try:
+                    sensor_data = float(self.connection.recv(1024).rstrip('\r\n'))
+                    print "Distance: %0.1f cm" % sensor_data
+                except:
+                    pass
+    
         finally:
             self.connection.close()
             self.server_socket.close()
