@@ -116,7 +116,7 @@ class CollectData(object):
                                 break
                                     
                         elif event.type == pygame.KEYUP:
-                            self.ser.write(chr(0))
+                            self.ser.write(chr(5))
 
             # save training images and labels
             train = image_array[1:, :]

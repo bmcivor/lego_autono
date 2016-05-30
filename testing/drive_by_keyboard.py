@@ -51,7 +51,7 @@ class RCTest(object):
                         break
 
                 elif event.type == pygame.KEYUP:
-                    self.ser.write(chr(0))
+                    self.ser.write(chr(5))
 
 if __name__ == '__main__':
     RCTest()
