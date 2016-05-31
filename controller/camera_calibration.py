@@ -18,6 +18,8 @@ epsilon The desired accuracy or change in parameters at which the iterative algo
 """
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
+window_name = 'Lego Autono'
+
 # 6x9 chess board, prepare object points, populate like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
 object_point = np.zeros((6 * 9, 3), np.float32)
 object_point[:, :2] = np.mgrid[0:9, 0:6].T.reshape(-1, 2)
@@ -30,10 +32,13 @@ h, w = 0, 0
 
 # load images of calibration directory
 images = glob.glob('calibration_chess_frame/*.jpg')
+cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+cv2.resizeWindow(window_name, 640, 480)
 
 for file_name in images:
-    image = cv2.imread(file_name)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    first_image = cv2.imread(file_name)
+    resized_image = cv2.resize(first_image, (640, 480))
+    gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
     h, w = gray.shape[:2]
 
     # find chess board corners
@@ -46,9 +51,9 @@ for file_name in images:
         imgpoints.append(corners)
 
         # draw and display the corners
-        cv2.drawChessboardCorners(image, (9, 6), corners, ret)
-        cv2.imshow('image', image)
-        cv2.waitKey(500)
+        cv2.drawChessboardCorners(resized_image, (9, 6), corners, ret)
+        cv2.imshow(window_name, resized_image)
+        cv2.waitKey(1000)
 
 # calibration
 """
@@ -62,6 +67,14 @@ print "camera matrix:\n", cameraMatrix
 ay = cameraMatrix[1, 1]
 u0 = cameraMatrix[0, 2]
 v0 = cameraMatrix[1, 2]
+
+print "\n"
+# adjust for used images in real time calculation
+print "adjusted for 320 x 240 resolution to be used in Lego Autono\n"
+ay /= 2
+u0 /= 2
+v0 /= 2
+
 print "Ay:", ay
 print "u0:", u0
 print "v0:", v0
