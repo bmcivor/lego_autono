@@ -40,6 +40,7 @@ class CollectData(object):
 
         saved_frame = 0
         total_frame = 0
+        window_name = 'Lego Autono'
 
         # collect images for training
         print 'Start collecting images...'
@@ -66,8 +67,13 @@ class CollectData(object):
                     # save streamed images
                     cv2.imwrite('training_images/frame{:>05}.jpg'.format(frame), image)
                     
+                    # resize output to controller, stream resolution kept low to limit
+                    # number of computations
+                    cv2.resizeWindow(window_name, 640, 480)
+                    
+                    
                     #cv2.imshow('roi_image', roi)
-                    cv2.imshow('image', image)
+                    cv2.imshow(window_name, image)
                     
                     # reshape the roi image into one row array
                     temp_array = roi.reshape(1, 38400).astype(np.float32)
