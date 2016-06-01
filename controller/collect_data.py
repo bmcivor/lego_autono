@@ -60,7 +60,7 @@ class CollectData(object):
                     jpg = stream_bytes[first:last + 2]
                     stream_bytes = stream_bytes[last + 2:]
                     image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_GRAYSCALE)
-                    
+                    resize_image = cv2.resize(image, (640, 480))
                     # select lower half of the image, limit processing, only interested in low objects
                     roi = image[120:240, :]
                     
@@ -73,7 +73,7 @@ class CollectData(object):
                     
                     
                     #cv2.imshow('roi_image', roi)
-                    cv2.imshow(window_name, image)
+                    cv2.imshow(window_name, resize_image)
                     
                     # reshape the roi image into one row array
                     temp_array = roi.reshape(1, 38400).astype(np.float32)
