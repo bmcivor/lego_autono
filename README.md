@@ -68,6 +68,7 @@ sudo reboot
 #References
 Structural build is based on the design provided by Laurens Valk in <http://robotsquare.com/books/ev3discovery/companion-page/>
 
+
 ***OpenCV documentation***
 - <http://docs.opencv.org/2.4/modules/ml/doc/neural_networks.html#cvann-mlp-predict>
 - <http://docs.opencv.org/2.4/doc/user_guide/ug_traincascade.html>
@@ -81,3 +82,10 @@ Structural build is based on the design provided by Laurens Valk in <http://robo
 
 ***PiCamera documentation***
 - <http://picamera.readthedocs.io/en/release-1.10/recipes1.html>
+=======
+OpenCV documentation - <http://docs.opencv.org/2.4/modules/ml/doc/neural_networks.html#cvann-mlp-predict>
+                     - <http://docs.opencv.org/2.4/doc/user_guide/ug_traincascade.html>
+                     - <http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html>
+Zheng Wang Blog Post - <https://zhengludwig.wordpress.com/projects/self-driving-rc-car/>
+David Singleton Blog Post - <http://blog.davidsingleton.org/nnrccar/>
+PiCamera documentation - <http://picamera.readthedocs.io/en/release-1.10/recipes1.html>
