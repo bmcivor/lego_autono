@@ -111,8 +111,7 @@ class SensorDataHandler(SocketServer.BaseRequestHandler):
         global sensor_data
         try:
             while self.data:
-                self.data = self.request.recv(1024)
-                sensor_data = round(float(self.data), 1)
+                sensor_data = float(self.connection.recv(1024).rstrip('\r\n'))
                 #print "{} sent:".format(self.client_address[0])
                 print sensor_data
         finally:
@@ -167,7 +166,6 @@ class VideoStreamHandler(SocketServer.StreamRequestHandler):
 
                     # object detection
                     v_param1 = self.obj_detection.detect(self.stop_cascade, gray, image)
-                    v_param2 = self.obj_detection.detect(self.light_cascade, gray, image)
 
                     # distance measurement
                     if v_param1 > 0:
@@ -176,8 +174,8 @@ class VideoStreamHandler(SocketServer.StreamRequestHandler):
                     
                     # resize output to controller, stream resolution kept low to limit
                     # number of computations
-                    cv2.resizeWindow(window_name, 640, 480)
-                    cv2.imshow(window_name, image)
+                    resize_image = cv2.resize(image, (640, 480))
+                    cv2.imshow(window_name, resize_image)
                     #cv2.imshow('mlp_image', half_gray)
 
                     # reshape image
