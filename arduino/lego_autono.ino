@@ -9,18 +9,6 @@
   -> Right Rear 9V DC Motor (Drive)
   -> Front Servo Motor (Steering)
   
-  based on the inputs of the sensors - 
-  
-  ->
-  ->
-  ->
-  
-  --------- Ports -> Motors
-  
-  M1 (Left Rear) - Bank B - M1
-  
-  
-  
 */  
 /************************************************************************/
 
