@@ -82,3 +82,6 @@ Structural build is based on the design provided by Laurens Valk in <http://robo
 
 ***PiCamera documentation***
 - <http://picamera.readthedocs.io/en/release-1.10/recipes1.html>
+
+***Ultrasonic documentation***
+- <http://www.modmypi.com/blog/hc-sr04-ultrasonic-range-sensor-on-the-raspberry-pi>

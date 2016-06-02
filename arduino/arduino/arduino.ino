@@ -60,6 +60,8 @@ void setup()
     delay(1000);
   }
   Serial.println("Ensure front wheels are centered for steering init");
+  evshield.bank_a.centerLedSetRGB(100,0,0);
+  evshield.bank_b.centerLedSetRGB(100,0,0);
   evshield.bank_a.ledSetRGB(100,0,0);
   evshield.bank_b.ledSetRGB(100,0,0);
   Serial.println ("Press GO button to calibrate steering");
@@ -83,7 +85,9 @@ void setup()
   evshield.waitForButtonPress(BTN_GO);
   
   evshield.bank_a.ledSetRGB(0,100,0);
-  evshield.bank_b.ledSetRGB(0,100,0);  
+  evshield.bank_b.ledSetRGB(0,100,0);
+  evshield.bank_a.centerLedSetRGB(0,100,0);
+  evshield.bank_b.centerLedSetRGB(0,100,0);    
 }
 
 void loop()
@@ -121,6 +125,10 @@ void driveStop(int button)
   {
     evshield.bank_b.motorStop(SH_Motor_1, SH_Next_Action_Brake);
     evshield.bank_a.motorStop(SH_Motor_1, SH_Next_Action_Brake);
+    evshield.bank_a.centerLedSetRGB(100,0,0);
+    evshield.bank_b.centerLedSetRGB(100,0,0);
+    evshield.bank_a.ledSetRGB(100,0,0);
+    evshield.bank_b.ledSetRGB(100,0,0);
   }
 }
 

@@ -12,7 +12,7 @@ SENSOR_ONE_SIG = 17
 SENSOR_TWO_TRIG = 23
 SENSOR_TWO_ECHO = 24
 
-# create a socker and bind the given socket to the host
+# create a socket and bind the given socket to the host
 # for communication of data
 client_socket = socket(AF_INET, SOCK_STREAM)
 client_socket.connect(('192.168.43.178', 8002))
