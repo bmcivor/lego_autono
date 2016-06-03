@@ -46,7 +46,7 @@ class RCTest(object):
                     elif key_input[pygame.K_x] or key_input[pygame.K_q]:
                         print 'Exit'
                         self.send_inst = False
-                        self.ser.write(chr(0))
+                        self.ser.write(chr(5))
                         self.ser.close()
                         break
 

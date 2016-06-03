@@ -97,12 +97,13 @@ void loop()
     /* read the most recent byte */
     button = Serial.read();
     /*ECHO the value that was read, back to the serial port. */
-    Serial.write(button);
+    Serial.println(button);
   }
   
   steeringDegrees = getSteeringPosition();
   driveForward(button);
   driveBackward(button);
+  driveStop(button);
   turnLeft(button);
   turnRight(button);
  
