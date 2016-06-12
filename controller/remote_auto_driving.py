@@ -39,8 +39,6 @@ class RCControl(object):
         elif prediction == 1:
             self.serial_port.write(chr(3))
             print("Right")
-        else:
-            self.serial_port.write(chr(5))
 
     def stop(self):
         print("Stop!!!!!")
@@ -52,8 +50,8 @@ class DistanceToCamera(object):
     def __init__(self):
         # camera params
         self.alpha = 8.0 * math.pi / 180
-        self.v0 = 119.865631204
-        self.ay = 332.262498472
+        self.v0 = 121.584703885
+        self.ay = 323.32350032
 
     def calculate(self, v, h, x_shift, image):
         # compute and return the distance from the target point to the camera
@@ -176,7 +174,7 @@ class VideoStreamHandler(SocketServer.StreamRequestHandler):
                     # number of computations
                     resize_image = cv2.resize(image, (640, 480))
                     cv2.imshow(window_name, resize_image)
-                    #cv2.imshow('mlp_image', half_gray)
+                    cv2.imshow('mlp_image', half_gray)
 
                     # reshape image
                     image_array = half_gray.reshape(1, 38400).astype(np.float32)

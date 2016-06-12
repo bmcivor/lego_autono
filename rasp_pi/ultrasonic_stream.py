@@ -65,7 +65,7 @@ def sensor_one_read():
 
 def sensor_two_read():
     GPIO.output(SENSOR_TWO_TRIG, True)
-    time.sleep(0.1)
+    time.sleep(0.01)
     GPIO.output(SENSOR_TWO_TRIG, False)
 
     while GPIO.input(SENSOR_TWO_ECHO) == 0:
