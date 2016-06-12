@@ -29,3 +29,5 @@
 
 # Mac Meta
 .DS_Store
+
+/controller/training_images/
